@@ -7,7 +7,7 @@ import numpy as np
 
 
 def snap(rectDetector, textDetector, nnet, optionsDetector):
-    url = "http://192.168.0.127/live"
+    url = "http://192.168.0.107/live"
     vidcap = cv2.VideoCapture(url)
     c, img = vidcap.read()
     if c:

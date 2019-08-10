@@ -33,7 +33,7 @@ async def third(rectDetector,textDetector,nnet,optionsDetector,img):
         img_h_r = img_h/(max_img_w/img_w*img_h)
     else:
         resized_img = img
-
+        
     NP = nnet.detect([resized_img]) 
     
     # Generate image mask.

@@ -44,7 +44,7 @@ def bytes_to_int(bytes):
 
 class Thread(QtCore.QThread):
     changePixmap = QtCore.pyqtSignal(QtGui.QImage)
-    link = "http://192.168.0.127/live"
+    link = "http://192.168.0.107/live"
 
     def run(self):
         cap = cv2.VideoCapture(self.link)
@@ -123,7 +123,7 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
         self.number_label.resize(561, 500)
         self.th = Thread(self)
         self.th2 = Thread(self)
-        self.th2.link = "http://192.168.0.127/live"
+        self.th2.link = "http://192.168.0.107/live"
         self.th.changePixmap.connect(self.setImage)
         self.th2.changePixmap.connect(self.setImage2)
         self.th.start()
@@ -136,7 +136,7 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
         self.th.start()
         self.th2.terminate()
         self.th2 = Thread()
-        self.th2.link = "http://192.168.0.127/live"
+        self.th2.link = "http://192.168.0.107/live"
         self.th2.changePixmap.connect(self.setImage2)
         self.th2.start()
 
