@@ -1,6 +1,3 @@
-
-#!/home/server/.envs/tensorflow/bin/python3
-
 import sys
 import os
 import numpy as np
@@ -173,12 +170,11 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
 
         MASK_RCNN_LOG_DIR = os.path.join(NOMEROFF_NET_DIR, 'logs')
         MASK_RCNN_MODEL_PATH = os.path.join(NOMEROFF_NET_DIR, "models/mask_rcnn_numberplate_0700.pb")
-        OPTIONS_MODEL_PATH =  os.path.join(NOMEROFF_NET_DIR, "models/numberplate_kz_options_2019_04_17.pb")
+        OPTIONS_MODEL_PATH =  os.path.join(NOMEROFF_NET_DIR, "models/numberplate_options_simple_2019_03_29.pb")
 
         # If you use gpu version tensorflow please change model to gpu version named like *-gpu.pb
         mode = "gpu"
         OCR_NP_KZ_TEXT =  os.path.join(NOMEROFF_NET_DIR, "models/anpr_ocr_kz_4-{}.pb".format(mode))
-        OCR_NP_KZ_BOX_TEXT =  os.path.join(NOMEROFF_NET_DIR, "models/anpr_ocr_kz-box_1-{}.pb".format(mode))
 
         sys.path.append(NOMEROFF_NET_DIR)
         # Initialize npdetector with default configuration file.
