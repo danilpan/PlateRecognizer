@@ -1,21 +1,20 @@
-#!/home/server/.envs/tensorflow/bin/python3
-
 import os
 import sys
+import time
+
 import requests
 from flask import Flask
 import cv2
 import numpy
-import time
 
 from Snapshot import snap
 from nomeroffnet import detection
 from nomeroffnet.NomeroffNet import Detector, RectDetector, OptionsDetector, TextDetector, filters, textPostprocessingAsync
 
-nnet = '1'
-rectDetector = '1'
-textDetector = '1'
-optionsDetector = '1'
+nnet = ''
+rectDetector = ''
+textDetector = ''
+optionsDetector = ''
 
 class FlaskApp(Flask):
 
@@ -27,6 +26,20 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
+    return "Welcome to Plate Recognizer home page"
+
+@app.route('/get_plate')
+def get_plate_number():
+    start = time.time()
+    img = cv2.imread('./img.jpg')
+    plate_number = detection.first(img,rectDetector, textDetector, nnet, optionsDetector)[0]
+    end = time.time()
+    calculation_time = end - start
+    response = 'Plate Number: '+str(plate_number)+" , "+'Calculation Time: '+str(calculation_time)
+    return response
+
+
+def load_models():
     global nnet
     global rectDetector
     global optionsDetector
@@ -65,13 +78,7 @@ def index():
             "model_path": OCR_NP_KZ_TEXT
         }
     })
-    return "Hello, World!"
-
-@app.route('/get_plate')
-def get_plate_number():
-    img = cv2.imread('./img.jpg')
-    plate_number = detection.first(img,rectDetector, textDetector, nnet, optionsDetector)[0]
-    return str(plate_number)
 
 if __name__ == '__main__':
+    load_models()
     app.run(host='0.0.0.0',debug=True)
