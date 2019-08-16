@@ -1,4 +1,6 @@
 import psycopg2
+import tkinter
+from tkinter import messagebox
 
 
 def create_table():
@@ -90,9 +92,13 @@ def set_weight_final(number, weight):
         connection.close()
         print('succesfully finished')
         if (abs(weight-weight_initial) == data[0][4]):
-            print('Ves sovpadaet')
+            root = tkinter.Tk()
+            root.withdraw()
+            messagebox.showinfo("Legal","Вес совпадает")
         else:
-            print('Proverte ves')
+            root = tkinter.Tk()
+            root.withdraw()
+            messagebox.showinfo("Illegal","Вес не соответствует данным")
 
     except Exception as e:
         print(str(e))
