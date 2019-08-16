@@ -1,27 +1,28 @@
 import sys
 import os
-import numpy as np
-import sys
-import json
-import matplotlib.image as mpimg
-from matplotlib import pyplot as plt
+import threading
+import time
 import warnings
-
-from nomeroffnet.NomeroffNet import Detector, RectDetector, OptionsDetector, TextDetector, filters, textPostprocessingAsync
+import json
 import asyncio
 
-import PyQt5
+import tkinter
+from tkinter import messagebox
 import cv2
+import numpy as np
+import matplotlib.image as mpimg
+from matplotlib import pyplot as plt
+import PyQt5
 import PyQt5.QtCore as QtCore
 import PyQt5.QtGui as QtGui
 import PyQt5.QtWidgets as QtWidgets
+
 import GUI
 import COM
 import Snapshot
 import Snapshot2
 import nomeroffnet.database as db
-import threading
-import time
+from nomeroffnet.NomeroffNet import Detector, RectDetector, OptionsDetector, TextDetector, filters, textPostprocessingAsync
 
 nnet = ''
 rectDetector = ''
@@ -75,7 +76,9 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
             number = Snapshot.snap(rectDetector, textDetector, nnet, optionsDetector)[0]
             print('Snapped!')
         except Exception as e:
-            print(str(e))
+            root = tkinter.Tk()
+            root.withdraw()
+            messagebox.showerror("Error",str(e))
             number = "Ошибка"
         self.number_label.setText(number)
         end = time.time()
@@ -89,8 +92,9 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
             number = Snapshot2.snap()[0]
             print('Snapped!')
         except Exception as e:
-            # tkMessageBox.showwarning('Ошибка', e.message)
-            print(str(e))
+            root = tkinter.Tk()
+            root.withdraw()
+            messagebox.showerror("Error",str(e))
             number = "Ошибка"
         self.number_label.setText(number)
         return number
@@ -147,10 +151,12 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
         response = db.check_plate(my_number)
         if(response == 'yes'):
             print('Number is in database')
-            # win32api.MessageBox(0, 'Номер в базе данных', 'OK')
+            root = tkinter.Tk()
+            root.withdraw()
+            messagebox.showinfo("Legal","Номер в базе данных")
         else:
             print('Number is not detected')
-            # win32api.MessageBox(0, 'Номер отсутствует в базе данных', 'SOS')
+            messagebox.showinfo("Illegal","Номер отсутствует в базе данных")
 
     def check_data(self):
         my_num = self.snap2()
