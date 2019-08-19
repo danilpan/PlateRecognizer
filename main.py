@@ -21,7 +21,7 @@ import GUI
 import COM
 import Snapshot
 import Snapshot2
-import nomeroffnet.database as db
+import database as db
 from nomeroffnet.NomeroffNet import Detector, RectDetector, OptionsDetector, TextDetector, filters, textPostprocessingAsync
 
 nnet = ''
@@ -145,11 +145,11 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
         my_number = self.snap()
         print(my_number)
         try:
-            db.create_table()
+            db.create_tables()
         except:
             pass
         response = db.check_plate(my_number)
-        if(response == 'yes'):
+        if(response):
             print('Number is in database')
             root = tkinter.Tk()
             root.withdraw()
