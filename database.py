@@ -11,7 +11,7 @@ create_table_weight = 'CREATE TABLE LOG (log_id SERIAL PRIMARY KEY, plate charac
 
 #Connection fucntion
 def connect():
-    conn = psycopg2.connect(user="postgres", password="11223344", host="127.0.0.1", port="5432", database="postgres")
+    conn = psycopg2.connect(user="postgres", password="postgres", host="127.0.0.1", port="5432", database="postgres")
     return conn
 
 #Create tables functions
@@ -35,7 +35,7 @@ def check_plate(number):
     try:
         now = datetime.now() #current time
         connection = connect()
-        insert_plate_query = "INSERT INTO log(plate,, time_visited, weight_initial, weight_final, weight_delta) VALUES ('"+number+"', TIMESTAMPTZ '"+str(now)+"' NULL, NULL, NULL);"
+        insert_plate_query = "INSERT INTO log(plate, time_visited, weight_initial, weight_final, weight_delta) VALUES ('"+number+"', TIMESTAMPTZ '"+str(now)+"', NULL, NULL, NULL);"
         check_plate_query = "SELECT plate FROM car WHERE PLATE=\'"+number+"\';"
         print('succesfully connected')
         cursor = connection.cursor()
@@ -48,9 +48,9 @@ def check_plate(number):
             cursor.close()
             connection.close()
             print('succesfully finished')
-            return 'yes'
+            return True
         else:
-            return 'no'
+            return False
 
     except Exception as e:
         print(str(e))

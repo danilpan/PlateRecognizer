@@ -30,19 +30,9 @@ textDetector = ''
 optionsDetector = ''
 
 
-
-def bytes_to_int(bytes):
-    result = 0
-
-    for b in bytes:
-        result = result * 256 + int(b)
-
-    return result
-
-
 class Thread(QtCore.QThread):
     changePixmap = QtCore.pyqtSignal(QtGui.QImage)
-    link = "http://192.168.0.107/live"
+    link = "http://192.168.0.126:8080/video"
 
     def run(self):
         cap = cv2.VideoCapture(self.link)
@@ -124,7 +114,7 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
         self.number_label.resize(561, 500)
         self.th = Thread(self)
         self.th2 = Thread(self)
-        self.th2.link = "http://192.168.0.107/live"
+        self.th2.link = "http://192.168.0.126:8080/video"
         self.th.changePixmap.connect(self.setImage)
         self.th2.changePixmap.connect(self.setImage2)
         self.th.start()
@@ -137,7 +127,7 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
         self.th.start()
         self.th2.terminate()
         self.th2 = Thread()
-        self.th2.link = "http://192.168.0.107/live"
+        self.th2.link = "http://192.168.0.126:8080/video"
         self.th2.changePixmap.connect(self.setImage2)
         self.th2.start()
 
@@ -150,12 +140,12 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
             pass
         response = db.check_plate(my_number)
         if(response):
-            print('Number is in database')
             root = tkinter.Tk()
             root.withdraw()
             messagebox.showinfo("Legal","Номер в базе данных")
         else:
-            print('Number is not detected')
+            root = tkinter.Tk()
+            root.withdraw()
             messagebox.showinfo("Illegal","Номер отсутствует в базе данных")
 
     def check_data(self):
