@@ -11,6 +11,6 @@ def readCom():
         if(res.isdigit()):
             weight+=str(res)
         res = s.read()
-    weignt=weight.replace('b','')
-    weignt=weight.replace("'",'')
+    weight=weight.replace('b','')
+    weight=weight.replace("'",'')
     return weight

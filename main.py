@@ -60,7 +60,6 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
 
     def snap(self):
         number = ""
-        start = time.time()
         try:
             print('Taking picture...')
             number = Snapshot.snap(rectDetector, textDetector, nnet, optionsDetector)[0]
@@ -71,8 +70,6 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
             messagebox.showerror("Error",str(e))
             number = "Ошибка"
         self.number_label.setText(number)
-        end = time.time()
-        print(end-start)
         return number
 
     def snap2(self):
