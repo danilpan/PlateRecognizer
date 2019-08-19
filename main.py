@@ -51,6 +51,7 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
 
     th = Thread
     th2 = Thread
+    current_plate = ""
 
     def __init__(self):
         super().__init__()
@@ -61,29 +62,27 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
     def snap(self):
         number = ""
         try:
-            print('Taking picture...')
             number = Snapshot.snap(rectDetector, textDetector, nnet, optionsDetector)[0]
-            print('Snapped!')
         except Exception as e:
             root = tkinter.Tk()
             root.withdraw()
-            messagebox.showerror("Error",str(e))
-            number = "Ошибка"
-        self.number_label.setText(number)
+            messagebox.showerror("Ошибка",str(e))
+            number = "Номер не определен"
+        self.label_num.setText(number)
+        self.current_plate = number
         return number
 
     def snap2(self):
         number = ""
         try:
-            print('Taking picture...')
-            number = Snapshot2.snap()[0]
-            print('Snapped!')
+            number = Snapshot2.snap(rectDetector, textDetector, nnet, optionsDetector)[0]
         except Exception as e:
             root = tkinter.Tk()
             root.withdraw()
-            messagebox.showerror("Error",str(e))
-            number = "Ошибка"
-        self.number_label.setText(number)
+            messagebox.showerror("Ошибка",str(e))
+            number = "Номер не определен"
+        self.label_num.setText(number)
+        self.current_plate = number
         return number
 
     def set_weight(self):
@@ -98,9 +97,9 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
         self.number_label.setPixmap(QtGui.QPixmap.fromImage(image))
 
     def initUI(self):
-        # create a label
-        self.pushButton.clicked.connect(self.check_data)
-        self.pushButton_2.clicked.connect(self.check_plate)
+        self.pushButton_5.clicked.connect(self.set_weight_initial)
+        self.pushButton_2.clicked.connect(self.set_weight_final)
+        self.pushButton.clicked.connect(self.check_plate)
         self.pushButton_3.clicked.connect(self.set_weight)
         self.pushButton_4.clicked.connect(self.start_camera)
         self.label = QtWidgets.QLabel(self)
@@ -130,7 +129,6 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
 
     def check_plate(self):
         my_number = self.snap()
-        print(my_number)
         try:
             db.create_tables()
         except:
@@ -149,6 +147,13 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
         my_num = self.snap2()
         db.set_weight_final(my_num, float(COM.readCom))
 
+    def set_weight_initial(self):
+        db.set_weight_initial(self.current_plate, int(COM.readCom()))
+
+    def set_weight_final(self):
+        my_num = self.snap2()
+        db.set_weight_final(my_num, int(COM.readCom()))
+
     def load_models(self):
         global nnet
         global rectDetector
@@ -157,7 +162,7 @@ class App(QtWidgets.QMainWindow, GUI.Ui_MainWindow):
 
         # change this property
         NOMEROFF_NET_DIR = os.path.abspath('nomeroffnet/')
-        print(NOMEROFF_NET_DIR)
+
         # specify the path to Mask_RCNN if you placed it outside Nomeroff-net project
         MASK_RCNN_DIR = os.path.join(NOMEROFF_NET_DIR, 'Mask_RCNN')
 

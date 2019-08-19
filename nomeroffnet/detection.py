@@ -51,5 +51,4 @@ async def third(rectDetector,textDetector,nnet,optionsDetector,img):
     # find text with postprocessing by standart  
     textArr = textDetector.predict(zones, regionNames)
     textArr = await textPostprocessingAsync(textArr, regionNames)
-    print(textArr[0])
     return (textArr)
