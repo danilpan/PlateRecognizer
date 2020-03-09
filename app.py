@@ -3,7 +3,7 @@ import sys
 import time
 
 import requests
-from flask import Flask
+from flask import Flask, request
 import cv2
 import numpy
 
@@ -37,6 +37,25 @@ def get_plate_number():
     calculation_time = end - start
     response = 'Plate Number: '+str(plate_number)+" , "+'Calculation Time: '+str(calculation_time)
     return response
+
+
+@app.route('/processImage',methods=['GET','POST'])
+def process_image():
+    if request.method == 'POST':
+        with open("image.jpg", "bw+") as f:
+            chunk_size = 4096
+            while True:
+                chunk = request.stream.read(chunk_size)
+                if len(chunk) == 0:
+                    start = time.time()
+                    img = cv2.imread('image.jpg')
+                    plate_number = detection.first(img,rectDetector, textDetector, nnet, optionsDetector)[0]
+                    end = time.time()
+                    calculation_time = end - start
+                    response = 'Plate Number: '+str(plate_number)+" , "+'Calculation Time: '+str(calculation_time)
+                    return response
+                f.write(chunk)
+    return 'GET method'
 
 
 def load_models():
