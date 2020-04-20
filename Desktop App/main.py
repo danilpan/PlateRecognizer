@@ -20,7 +20,6 @@ import PyQt5.QtWidgets as QtWidgets
 import GUI
 import COM
 import Snapshot
-import Snapshot2
 import database as db
 from nomeroffnet.NomeroffNet import Detector, RectDetector, OptionsDetector, TextDetector, filters, textPostprocessingAsync
 
