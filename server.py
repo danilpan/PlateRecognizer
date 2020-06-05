@@ -3,8 +3,8 @@ import sys
 import time
 import json
 import hashlib
-
 import requests
+
 from flask import Flask, request, abort
 import cv2
 import numpy
